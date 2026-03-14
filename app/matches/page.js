@@ -1,0 +1,5 @@
+"use client"
+import { useEffect, useState } from "react"
+import Link from "next/link"
+import { getMatches } from "@/lib/storage"
+export default function MatchesPage(){const [matches,setMatches]=useState([]); useEffect(()=>{getMatches().then(setMatches)},[]); return <main className="page-shell"><div className="glass card"><span className="badge">Zápasy</span><h1 className="title-lg" style={{marginTop:14}}>Historie zápasů</h1><div className="stack">{!matches.length?<div className="empty">Zatím žádné zápasy.</div>:null}{matches.map((match)=><Link key={match.id} href={`/match/${match.id}`} className="panel"><strong>{match.teamA.map((p)=>p.team).join(", ")} vs {match.teamB.map((p)=>p.team).join(", ")}</strong><br /><span className="muted">{match.type} • {match.league==="first"?"1. liga":"2. liga"} • {match.status}</span>{match.status==="finished"?<div className="row" style={{marginTop:8}}><span className="inline-pill">Vítěz: Team {match.winnerTeam}</span><span className="inline-pill">{match.wentToOvertime?"Výhra po remíze":"Výhra v základní části"}</span></div>:null}</Link>)}</div></div></main>}
